@@ -109,5 +109,5 @@ ITZFIZZ-assignment/
 
 ## 👤 Author
 
-**Subhaush Singh**  
+**Subh Aush Singh**  
 [GitHub](https://github.com/subhaushsingh)
