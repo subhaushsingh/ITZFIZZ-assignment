@@ -1,6 +1,6 @@
 import './App.css'
 import gsap from 'gsap'
-import { useRef, useEffect } from 'react'
+import { useRef, useLayoutEffect } from 'react'
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { ScrollToPlugin } from "gsap/ScrollToPlugin"
 
@@ -23,7 +23,7 @@ function App() {
 
   //comments are present to identify each section in animation for ease in development
 
-  useEffect(() => {
+  useLayoutEffect(() => {
 
     const ctx = gsap.context(() => {
 
