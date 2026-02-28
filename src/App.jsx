@@ -21,11 +21,13 @@ function App() {
   const fizzRef = useRef(null)
   
 
+  //comments are present to identify each section in animation for ease in development
+
   useEffect(() => {
 
     const ctx = gsap.context(() => {
 
-      // ---------------- LOADING ----------------
+      //loading
       let progress = 0
       const increment = 5
 
@@ -51,7 +53,7 @@ function App() {
         progress += increment
       }, 100)
 
-      // ---------------- HORIZONTAL SCROLL ----------------
+      //horizontal scroll
       const container = horizontalRef.current
       const containerWidth =
         container.scrollWidth - document.documentElement.clientWidth
@@ -70,14 +72,14 @@ function App() {
 
       gsap.to(textRef.current, {
   x:150,
-  y: 150,          // how far down it moves (adjust to taste)
+  y: 150,          
   opacity: 0,
   ease:"back.in",
   scrollTrigger: {
     trigger: wrapperRef.current,
     start: "top top",
     scrub: 0.5,
-    end: "+=" + container * 0.3,  // disappears in first 30% of scroll
+    end: "+=" + container * 0.3,  
   }
 })
 
@@ -95,7 +97,7 @@ gsap.from(itRef.current, {
 })
 
 
-      // ---------------- ZOOM SECTION ----------------
+      //zoom section
       gsap.timeline({
         scrollTrigger: {
           trigger: zoomRef.current,
@@ -213,7 +215,7 @@ gsap.from(itRef.current, {
         </div>
       </div>
 
-      {/* ZOOM */}
+      {/* ZOOM SECTION*/}
       <div className="zoom-container h-full w-full flex flex-col items-center relative">
         <div
           ref={zoomRef}
