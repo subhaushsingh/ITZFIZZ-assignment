@@ -16,6 +16,11 @@ function App() {
   const wrapperRef = useRef(null)
   const zoomRef = useRef(null)
 
+  const textRef = useRef(null)
+  const itRef = useRef(null)
+  const fizzRef = useRef(null)
+  
+
   useEffect(() => {
 
     const ctx = gsap.context(() => {
@@ -62,6 +67,33 @@ function App() {
           end: "+=" + containerWidth,
         }
       })
+
+      gsap.to(textRef.current, {
+  x:150,
+  y: 150,          // how far down it moves (adjust to taste)
+  opacity: 0,
+  ease:"back.in",
+  scrollTrigger: {
+    trigger: wrapperRef.current,
+    start: "top top",
+    scrub: 0.5,
+    end: "+=" + container * 0.3,  // disappears in first 30% of scroll
+  }
+})
+
+gsap.from(itRef.current, {
+  x: -250,
+  y: -100,
+  opacity: 0,
+  ease: "back.in",
+  scrollTrigger: {
+    trigger: wrapperRef.current,
+    start: "top top",
+    scrub: 0.5,
+    end: "+=" + containerWidth * 0.3,
+  }
+})
+
 
       // ---------------- ZOOM SECTION ----------------
       gsap.timeline({
@@ -123,38 +155,55 @@ function App() {
           <div ref={horizontalRef} className="horizontal-scroller grid grid-rows-2 gap-1.5 w-full h-screen">
 
             <div className="flex gap-2">
-              <div className="p-[5vw] border-[5px] border-white rounded-[5vw] text-[2vw] flex flex-col justify-between h-[50vh] w-[50vw] bg-white text-black">
-                Horizontal Item
+              <div  className="p-[5vw] border-[5px] border-white rounded-[5vw]  flex flex-col justify-between h-[50vh] w-[50vw] bg-[#c0f403]  text-[#222222]">
+                <p ref={textRef} className='text-[100px]'>WELCOME</p>
               </div>
-               <div className="p-[5vw] border-[5px] border-white rounded-[5vw] text-[2vw] flex flex-col justify-between h-[50vh] w-[50vw] bg-white text-black">
-                Horizontal Item
+               <div className="p-[5vw] border-[5px] border-white rounded-[5vw] text-[45px] flex flex-col justify-between h-[50vh] w-[50vw] bg-[#222222] text-[#c0f403]">
+                SOCIAL MEDIA MARKETING
+                <p className='text-[20px]'>Harness the power of social platforms to engage your audience and build meaningful connections. Our SMM
+            experts craft targeted campaigns on Instagram, Facebook, LinkedIn, and more to grow your brand organically
+            and through paid strategies.</p>
               </div>
-               <div className="p-[5vw] border-[5px] border-white rounded-[5vw] text-[2vw] flex flex-col justify-between h-[50vh] w-[50vw] bg-white text-black">
-                Horizontal Item
+               <div className="p-[5vw] border-[5px] border-white rounded-[5vw] text-[50px] flex flex-col justify-between h-[50vh] w-[50vw] bg-[#c0f403] text-black">
+                WEB DEVELOPMENT
+                <p className='text-[20px]'>Create a seamless user experience with custom websites designed to convert. Our development team builds
+            responsive, high-performance websites optimized for both desktop and mobile users.</p>
               </div>
-              <div className="p-[5vw] border-[5px] border-white rounded-[5vw] text-[2vw] flex flex-col justify-between h-[50vh] w-[50vw] bg-white text-black">
-                Horizontal Item
+              <div className="p-[5vw] border-[5px] border-white rounded-[5vw] text-[60px] flex flex-col justify-between h-[50vh] w-[50vw] bg-[#222222] text-[#c0f403]">
+                ELEVATE YOUR DIGITAL STRATEGY
               </div>
-              <div className="p-[5vw] border-[5px] border-white rounded-[5vw] text-[2vw] flex flex-col justify-between h-[50vh] w-[50vw] bg-white text-black">
-                Horizontal Item
+              
+              <div className="p-[5vw] border-[5px] border-white rounded-[5vw] text-[70px] flex flex-col justify-between h-[50vh] w-[50vw] bg-[#c0f403] text-[#c0f403]">
+                
               </div>
+              
               
             </div>
              <div className="flex gap-2">
-              <div className="p-[5vw] border-[5px] border-white rounded-[5vw] text-[2vw] flex flex-col justify-between h-[50vh] w-[50vw] bg-white text-black">
-                Horizontal Item
+              <div className="p-[5vw] border-[5px] border-white rounded-[5vw] text-[50px] flex flex-col justify-between h-[50vh] w-[50vw] bg-[#222222] text-[#c0f403]">
+                SEARCH ENGINE OPTIMIZATION
+                <p className='text-[20px]'>Drive organic traffic with a proven SEO strategy that focuses on on-page optimization, quality backlinks,
+            and
+            technical SEO. From keyword research to content marketing, we ensure your website ranks at the top of search
+            engine results.</p>
               </div>
-               <div className="p-[5vw] border-[5px] border-white rounded-[5vw] text-[2vw] flex flex-col justify-between h-[50vh] w-[50vw] bg-white text-black">
-                Horizontal Item
+               <div className="p-[5vw] border-[5px] border-white rounded-[5vw] text-[2vw] flex flex-col justify-between h-[50vh] w-[50vw] bg-[#c0f403] text-[#222222]">
+                <p ref={itRef} className='text-[100px]'>ITZFIZZ</p>
               </div>
-               <div className="p-[5vw] border-[5px] border-white rounded-[5vw] text-[2vw] flex flex-col justify-between h-[50vh] w-[50vw] bg-white text-black">
-                Horizontal Item
+               <div className="p-[5vw] border-[5px] border-white rounded-[5vw] text-[50px] flex flex-col justify-between h-[50vh] w-[50vw] bg-[#222222] text-[#c0f403]">
+                UI/UX DESIGN
+                <p className='text-[20px]'>Our UI/UX design services focus on creating intuitive, user-centric designs that not only look great but
+            also deliver superior usability and functionality. From wireframes to prototypes, we bring your vision to
+            life.</p>
               </div>
-              <div className="p-[5vw] border-[5px] border-white rounded-[5vw] text-[2vw] flex flex-col justify-between h-[50vh] w-[50vw] bg-white text-black">
-                Horizontal Item
+              <div className="p-[5vw] border-[5px] border-white rounded-[5vw] text-[50px] flex flex-col justify-between h-[50vh] w-[50vw] bg-[#c0f403] text-black">
+                BRANDING
+                <p className='text-[20px]'>Establish a brand identity that resonates. From logo creation to full rebranding strategies, we help
+            businesses create a lasting impression in the minds of their audience</p>
               </div>
-              <div className="p-[5vw] border-[5px] border-white rounded-[5vw] text-[2vw] flex flex-col justify-between h-[50vh] w-[50vw] bg-white text-black">
-                Horizontal Item
+              
+              <div className="p-[5vw] border-[5px] border-white rounded-[5vw] text-[70px] flex flex-col justify-between h-[50vh] w-[50vw] bg-[#222222] text-[#c0f403]">
+                
               </div>
               
             </div>
