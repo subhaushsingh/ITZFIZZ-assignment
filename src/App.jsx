@@ -1,186 +1,189 @@
 import './App.css'
+import gsap from 'gsap'
+import { useRef, useEffect } from 'react'
+import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { ScrollToPlugin } from "gsap/ScrollToPlugin"
+
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin)
 
 function App() {
+
+  const loadingRef = useRef(null)
+  const heroRef = useRef(null)
+  const progressBarRef = useRef(null)
+  const counterRef = useRef(null)
+  const horizontalRef = useRef(null)
+  const wrapperRef = useRef(null)
+  const zoomRef = useRef(null)
+
+  useEffect(() => {
+
+    const ctx = gsap.context(() => {
+
+      // ---------------- LOADING ----------------
+      let progress = 0
+      const increment = 5
+
+      document.body.style.overflow = "hidden"
+
+      const interval = setInterval(() => {
+        if (progress >= 100) {
+          clearInterval(interval)
+
+          gsap.to(loadingRef.current, {
+            opacity: 0,
+            height: 0,
+            duration: 0.5,
+            onComplete: () => {
+              gsap.to(heroRef.current, { opacity: 1 })
+              document.body.style.overflowY = "scroll"
+            }
+          })
+        }
+
+        progressBarRef.current.style.width = `${progress}%`
+        counterRef.current.textContent = `${progress}%`
+        progress += increment
+      }, 100)
+
+      // ---------------- HORIZONTAL SCROLL ----------------
+      const container = horizontalRef.current
+      const containerWidth =
+        container.scrollWidth - document.documentElement.clientWidth
+
+      gsap.to(container, {
+        x: -containerWidth,
+        ease: "none",
+        scrollTrigger: {
+          trigger: wrapperRef.current,
+          start: "top top",
+          scrub: 0.5,
+          pin: true,
+          end: "+=" + containerWidth,
+        }
+      })
+
+      // ---------------- ZOOM SECTION ----------------
+      gsap.timeline({
+        scrollTrigger: {
+          trigger: zoomRef.current,
+          scrub: true,
+          start: "top top",
+          end: "+=1000%",
+          pin: true,
+        }
+      })
+      .to(".zoom-circle", { scale: 12 })
+      .to(".zoom-content", { scale: 1 }, "<")
+
+    })
+
+    return () => ctx.revert()
+
+  }, [])
+
   return (
     <>
-      <div id="loading-screen">
-        <div id="progress-bar"></div>
-        <div id="progress-counter">0%</div>
+      {/* LOADING */}
+      <div
+        ref={loadingRef}
+        id="loading-screen"
+        className="w-screen h-screen bg-white flex flex-col justify-end items-start absolute top-0"
+      >
+        <div
+          ref={progressBarRef}
+          id="progress-bar"
+          className="w-0 h-screen absolute bottom-0 bg-white mix-blend-difference"
+        ></div>
+
+        <div
+          ref={counterRef}
+          id="progress-counter"
+          className="text-white text-[23vw] mix-blend-difference"
+        >
+          0%
+        </div>
       </div>
 
-      <div className="hero  flex flex-col justify-end items-center h-screen opacity-0 transition-opacity duration-1000 ease-in">
+      {/* HERO */}
+      <div
+        ref={heroRef}
+        className="hero flex flex-col justify-end items-center h-screen opacity-0"
+      >
         <div className="sun flex flex-col items-center relative w-full h-full justify-end">
-          <div className="semicircle w-[40%] h-[20vw] bg-white rounded-t-[2000px] absolute bottom-0 text-white mix-blend-difference"></div>
-          <div className="line"></div>
+          <div className="semicircle w-[40%] h-[20vw] bg-white rounded-t-[2000px] absolute bottom-0 mix-blend-difference"></div>
+          <div className="line w-screen h-px bg-white"></div>
         </div>
-        <div className="road bg-white [clip-path:polygon(50%_0,100%_100%,0_100%)] w-screen h-full relative bottom-0 text-white mix-blend-difference"></div>
+        <div className="road bg-white [clip-path:polygon(50%_0,100%_100%,0_100%)] w-screen h-full relative mix-blend-difference"></div>
       </div>
 
-      <div className="part1">
-        <p className="sitename">UI ROAD TRIP</p>
+      {/* HORIZONTAL */}
+      <div className="horizontal-container w-full h-[calc(100vh+210vw)] mt-8">
+        <div ref={wrapperRef} className="horizontal-wrapper w-full h-[calc(100vh+210vw)]">
+          <div ref={horizontalRef} className="horizontal-scroller grid grid-rows-2 gap-1.5 w-full h-screen">
 
-        <div className="spacer"></div>
-
-        <div className="big-text">
-          <p className="fadein">SAY HELLO</p>
-          <p className="fadein">TO THESE</p>
-          <p className="fadein">HUGE TEXTS</p>
-        </div>
-      </div>
-
-      <div className="horizontal-container">
-        <div className="horizontal-wrapper">
-          <div className="horizontal-scroller">
-            <div className="row">
-              <div className="item filled">
-                <p>We have some amazing content on this site. Wanna check 'em out?</p>
-                <a className="link item-link">
-                  <span className="link-text" data-text="Check our content">
-                    Check our content
-                  </span>
-                </a>
+            <div className="flex gap-2">
+              <div className="p-[5vw] border-[5px] border-white rounded-[5vw] text-[2vw] flex flex-col justify-between h-[50vh] w-[50vw] bg-white text-black">
+                Horizontal Item
               </div>
-
-              <div className="item filled">
-                <p>
-                  Fun fact: Did you know that minimalism is on the rise? UIs now
-                  use fewer colors, simple typography, and generous white space.
-                </p>
+               <div className="p-[5vw] border-[5px] border-white rounded-[5vw] text-[2vw] flex flex-col justify-between h-[50vh] w-[50vw] bg-white text-black">
+                Horizontal Item
               </div>
-
-              <div className="item big">
-                <p>5,667 Cups of Coffee</p>
+               <div className="p-[5vw] border-[5px] border-white rounded-[5vw] text-[2vw] flex flex-col justify-between h-[50vh] w-[50vw] bg-white text-black">
+                Horizontal Item
               </div>
-
-              <div className="item filled">
-                <p>
-                  Did you know that users can memorize only around 6-7 chunks of
-                  data while browsing a webpage?
-                </p>
-                <a className="link item-link">
-                  <span className="link-text" data-text="Learn more">
-                    Learn more
-                  </span>
-                </a>
+              <div className="p-[5vw] border-[5px] border-white rounded-[5vw] text-[2vw] flex flex-col justify-between h-[50vh] w-[50vw] bg-white text-black">
+                Horizontal Item
               </div>
-
-              <div className="item filled big">
-                <p>How is your UX doing?</p>
+              <div className="p-[5vw] border-[5px] border-white rounded-[5vw] text-[2vw] flex flex-col justify-between h-[50vh] w-[50vw] bg-white text-black">
+                Horizontal Item
               </div>
-
-              <div className="item">
-                <p>
-                  Fun fact 3: CSS Grids were first introduced in 2011 by
-                  Microsoft.
-                </p>
-              </div>
+              
             </div>
-
-            <div className="row">
-              <div className="item big">
-                <p>Scroll is the new click.</p>
+             <div className="flex gap-2">
+              <div className="p-[5vw] border-[5px] border-white rounded-[5vw] text-[2vw] flex flex-col justify-between h-[50vh] w-[50vw] bg-white text-black">
+                Horizontal Item
               </div>
-
-              <div className="item filled">
-                <p>
-                  Do you like scrolling forever? Check out our infinite scrolling page.
-                </p>
-                <a className="link item-link">
-                  <span className="link-text" data-text="Check it out">
-                    Check it out
-                  </span>
-                </a>
+               <div className="p-[5vw] border-[5px] border-white rounded-[5vw] text-[2vw] flex flex-col justify-between h-[50vh] w-[50vw] bg-white text-black">
+                Horizontal Item
               </div>
-
-              <div className="item filled">
-                <p>
-                  Fun fact 2: None of these links actually lead anywhere except the last link.
-                </p>
+               <div className="p-[5vw] border-[5px] border-white rounded-[5vw] text-[2vw] flex flex-col justify-between h-[50vh] w-[50vw] bg-white text-black">
+                Horizontal Item
               </div>
-
-              <div className="item big">
-                <p># I &lt;3 GSAP</p>
+              <div className="p-[5vw] border-[5px] border-white rounded-[5vw] text-[2vw] flex flex-col justify-between h-[50vh] w-[50vw] bg-white text-black">
+                Horizontal Item
               </div>
-
-              <div className="item filled">
-                <p><b>Tip:</b> Search 'GSAP Horizontal Scroll' in the code.</p>
+              <div className="p-[5vw] border-[5px] border-white rounded-[5vw] text-[2vw] flex flex-col justify-between h-[50vh] w-[50vw] bg-white text-black">
+                Horizontal Item
               </div>
-
-              <div className="item filled">
-                <p>Gotta go already? Check back later.</p>
-              </div>
+              
             </div>
+            
+
           </div>
         </div>
       </div>
 
-      <div className="cards-container">
-        <div className="cards">
-          <div className="cards-text-container">
-            <div className="cards-text">
-              <h2>DO YOU LIKE CARDS?</h2>
-              <p>Well, you'd better.</p>
-              <p>No worries though. Keep scrollin'.</p>
-              <p>This is just the beginning.</p>
-            </div>
+      {/* ZOOM */}
+      <div className="zoom-container h-full w-full flex flex-col items-center relative">
+        <div
+          ref={zoomRef}
+          className="zoom h-screen flex flex-col items-center justify-between w-screen"
+        >
+          <h2 className="text-white mix-blend-difference text-[6vw]">
+            KEEP SCROLLING TO ZOOM
+          </h2>
 
-            <div className="cards-text">
-              <h2>CARD AFTER CARD</h2>
-              <p>Just to get your focus here.</p>
-              <p>Hope you're enjoying your free set of cards.</p>
-            </div>
+          <div className="zoom-circle h-[30vw] w-[30vw] rounded-full bg-white mix-blend-difference absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
 
-            <div className="cards-text">
-              <h2>NOW YOU TRY</h2>
-              <p>Time to get your hands dirty.</p>
-              <p>Search 'Cards' in the code.</p>
-            </div>
+          <h3 className="zoom-content text-white mix-blend-difference absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[5vw]">
+            ZOOM INNN
+          </h3>
 
-            <div className="cards-cta">GET STARTED</div>
-          </div>
-
-          <div className="cards-image-container">
-            <div className="cards-image">
-              <img className="image" src="https://github.com/juxtopposed/codepen/blob/main/cards.png?raw=true" />
-              <img className="alt" src="https://github.com/juxtopposed/codepen/blob/main/cards.png?raw=true" />
-            </div>
-
-            <div className="cards-image">
-              <img className="image" src="https://github.com/juxtopposed/codepen/blob/main/zoom.png?raw=true" />
-              <img className="alt" src="https://github.com/juxtopposed/codepen/blob/main/zoom.png?raw=true" />
-            </div>
-
-            <div className="cards-image">
-              <img className="image" src="https://github.com/juxtopposed/codepen/blob/main/3dcards.png?raw=true" />
-              <img className="alt" src="https://github.com/juxtopposed/codepen/blob/main/3dcards.png?raw=true" />
-            </div>
-          </div>
         </div>
       </div>
 
-      <div className="zoom-container">
-        <div className="zoom">
-          <h2 className="zoom-heading">KEEP SCROLLING TO ZOOM</h2>
-          <div className="zoom-circle"></div>
-          <h3 className="zoom-content">ZOOM INNN</h3>
-
-          <div className="footer">
-            <p className="footer-content">Thanks for watching!</p>
-            <a
-              className="footer-content link"
-              href="https://twitter.com/juxtopposed"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <span className="link-text" data-text="Let's connect">
-                Let's connect
-              </span>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div style={{ height: "300vh" }}></div>
+      <div className="h-[300vh]"></div>
     </>
   )
 }
